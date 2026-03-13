@@ -1,0 +1,315 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Miss You ❤️</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#0f0f1a;
+color:white;
+overflow:hidden;
+}
+
+/* SLIDES */
+
+.slide{
+position:absolute;
+width:100%;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:40px;
+opacity:0;
+transform:translateX(100px) scale(.9);
+transition:all .8s ease;
+}
+
+.slide.active{
+opacity:1;
+transform:translateX(0) scale(1);
+}
+
+h1{
+font-size:45px;
+margin-bottom:20px;
+}
+
+p{
+font-size:22px;
+max-width:700px;
+line-height:1.6;
+}
+
+img{
+width:320px;
+border-radius:15px;
+margin-top:25px;
+box-shadow:0 0 25px rgba(255,255,255,0.2);
+}
+
+/* BUTTONS */
+
+.buttons{
+position:fixed;
+bottom:30px;
+width:100%;
+display:flex;
+justify-content:center;
+gap:20px;
+}
+
+button{
+padding:14px 30px;
+border:none;
+border-radius:50px;
+font-size:18px;
+cursor:pointer;
+background:linear-gradient(45deg,#ff4b91,#ff7ac6);
+color:white;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.1);
+}
+
+/* PROGRESS BAR */
+
+.progress{
+position:fixed;
+top:0;
+left:0;
+height:5px;
+background:#ff4b91;
+width:0%;
+transition:.5s;
+}
+
+/* FLOATING HEARTS */
+
+.heart{
+position:absolute;
+color:#ff4b91;
+font-size:20px;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh);}
+100%{transform:translateY(-10vh);}
+}
+
+/* TAP HEART */
+
+@keyframes pop{
+0%{transform:scale(0);opacity:1;}
+100%{transform:scale(2);opacity:0;}
+}
+
+/* MUSIC */
+
+.music{
+position:fixed;
+top:15px;
+right:15px;
+display:flex;
+gap:10px;
+}
+
+/* MOBILE */
+
+@media (max-width:768px){
+
+h1{font-size:32px;}
+
+p{font-size:18px;}
+
+img{width:80%;}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="progress" id="progress"></div>
+
+<audio id="music" loop>
+<source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music">
+<button onclick="playMusic()">Play</button>
+<button onclick="pauseMusic()">Pause</button>
+</div>
+
+<!-- SLIDES -->
+
+<div class="slide active">
+<h1>I Miss You So Much ❤️</h1>
+<p>Right now you're busy with exams... and I understand. But every moment without you feels different.</p>
+</div>
+
+<div class="slide">
+<h1>Everything Reminds Me Of You</h1>
+<p>Every song, every moment somehow reminds me of you.</p>
+</div>
+
+<div class="slide">
+<h1>The Silence Feels Strange</h1>
+<p>I'm used to seeing your messages pop up. Without them everything feels quieter.</p>
+</div>
+
+<div class="slide">
+<h1>I'm Proud Of You</h1>
+<p>I know you're working hard for your exams and I'm really proud of you.</p>
+</div>
+
+<div class="slide">
+<h1>Just One Thing</h1>
+<p>Even if you can't talk much right now, just know that I'm always thinking about you.</p>
+</div>
+
+<div class="slide">
+<h1>Our Memories</h1>
+<p>Remember all the fun moments we had together.</p>
+<img src="image1.jpg">
+</div>
+
+<div class="slide">
+<h1>More Moments</h1>
+<p>Every memory with you is special to me.</p>
+<img src="image2.jpg">
+</div>
+
+<div class="slide">
+<h1>I'll Be Waiting</h1>
+<p>Finish your exams and come back soon. Until then... I'll keep missing you.</p>
+</div>
+
+<div class="buttons">
+<button onclick="prev()">Previous</button>
+<button onclick="next()">Next</button>
+</div>
+
+<script>
+
+let slides=document.querySelectorAll(".slide");
+let index=0;
+let progress=document.getElementById("progress");
+
+function showSlide(i){
+slides.forEach(s=>s.classList.remove("active"));
+slides[i].classList.add("active");
+progress.style.width=((i+1)/slides.length)*100+"%";
+}
+
+function next(){
+if(index<slides.length-1){
+index++;
+showSlide(index);
+}
+}
+
+function prev(){
+if(index>0){
+index--;
+showSlide(index);
+}
+}
+
+/* KEYBOARD */
+
+document.addEventListener("keydown",e=>{
+if(e.key==="ArrowRight")next();
+if(e.key==="ArrowLeft")prev();
+});
+
+/* MUSIC */
+
+function playMusic(){
+document.getElementById("music").play();
+}
+
+function pauseMusic(){
+document.getElementById("music").pause();
+}
+
+/* FLOATING HEARTS */
+
+setInterval(()=>{
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤";
+heart.style.left=Math.random()*100+"%";
+heart.style.fontSize=(Math.random()*20+10)+"px";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},6000);
+
+},300);
+
+/* TAP HEART */
+
+document.addEventListener("click",function(e){
+
+let heart=document.createElement("div");
+
+heart.innerHTML="❤";
+heart.style.position="absolute";
+heart.style.left=e.pageX+"px";
+heart.style.top=e.pageY+"px";
+heart.style.fontSize="25px";
+heart.style.color="#ff4b91";
+heart.style.animation="pop 1s forwards";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),1000);
+
+});
+
+/* SWIPE MOBILE */
+
+let startX=0;
+
+document.addEventListener("touchstart",(e)=>{
+startX=e.touches[0].clientX;
+});
+
+document.addEventListener("touchend",(e)=>{
+let endX=e.changedTouches[0].clientX;
+
+if(startX-endX>50){
+next();
+}
+
+if(endX-startX>50){
+prev();
+}
+
+});
+
+</script>
+
+</body>
+</html>
+```
