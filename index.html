@@ -130,6 +130,44 @@ display:flex;
 gap:10px;
 }
 
+/* DIFFERENT SLIDE ANIMATIONS */
+
+.slide.fade.active{
+animation:fadeIn 1s forwards;
+}
+
+.slide.zoom.active{
+animation:zoomIn 1s forwards;
+}
+
+.slide.up.active{
+animation:slideUp 1s forwards;
+}
+
+.slide.rotate.active{
+animation:rotateIn 1s forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes zoomIn{
+from{transform:scale(.5);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+@keyframes slideUp{
+from{transform:translateY(80px);opacity:0;}
+to{transform:translateY(0);opacity:1;}
+}
+
+@keyframes rotateIn{
+from{transform:rotate(-10deg) scale(.8);opacity:0;}
+to{transform:rotate(0) scale(1);opacity:1;}
+}
+
 /* MOBILE */
 
 @media (max-width:768px){
@@ -160,63 +198,76 @@ img{width:80%;}
 
 <!-- SLIDES -->
 
-<div class="slide active">
+<div class="slide fade active">
 <h1>I Miss You So Much ❤️</h1>
-<p>Right now you're busy with exams... and I understand. But every moment without you feels different.</p>
+<p>Right now you're busy with exams and I understand. But every moment without you feels different.</p>
 </div>
 
-<div class="slide">
+<div class="slide zoom">
 <h1>Everything Reminds Me Of You</h1>
 <p>Every song, every moment somehow reminds me of you.</p>
 </div>
 
-<div class="slide">
+<div class="slide up">
 <h1>The Silence Feels Strange</h1>
 <p>I'm used to seeing your messages pop up. Without them everything feels quieter.</p>
 </div>
 
-<div class="slide">
+<div class="slide rotate">
 <h1>I'm Proud Of You</h1>
 <p>I know you're working hard for your exams and I'm really proud of you.</p>
 </div>
 
-<div class="slide">
+<div class="slide fade">
 <h1>Just One Thing</h1>
 <p>Even if you can't talk much right now, just know that I'm always thinking about you.</p>
 </div>
 
-<div class="slide">
+<div class="slide zoom">
 <h1>Our Memories</h1>
 <p>Remember all the fun moments we had together.</p>
 <img src="image1.jpg">
 </div>
 
-<div class="slide">
+<div class="slide up">
 <h1>More Moments</h1>
 <p>Every memory with you is special to me.</p>
 <img src="image2.jpg">
 </div>
 
-<div class="slide">
+<div class="slide rotate">
 <h1>I'll Be Waiting</h1>
-<p>Finish your exams and come back soon. Until then... I'll keep missing you.</p>
+<p>Finish your exams and come back soon. Until then I'll keep missing you.</p>
 </div>
 
 <div class="buttons">
-<button onclick="prev()">Previous</button>
-<button onclick="next()">Next</button>
+<button id="prevBtn" onclick="prev()">Previous</button>
+<button id="nextBtn" onclick="next()">Next</button>
 </div>
 
 <script>
 
 let slides=document.querySelectorAll(".slide");
 let index=0;
+
 let progress=document.getElementById("progress");
+let nextBtn=document.getElementById("nextBtn");
+
+let music=document.getElementById("music");
 
 function showSlide(i){
+
 slides.forEach(s=>s.classList.remove("active"));
 slides[i].classList.add("active");
+
 progress.style.width=((i+1)/slides.length)*100+"%";
+
+if(i===slides.length-1){
+nextBtn.style.display="none";
+}else{
+nextBtn.style.display="inline-block";
+}
+
 }
 
 function next(){
@@ -233,7 +284,7 @@ showSlide(index);
 }
 }
 
-/* KEYBOARD */
+/* keyboard navigation */
 
 document.addEventListener("keydown",e=>{
 if(e.key==="ArrowRight")next();
@@ -243,17 +294,25 @@ if(e.key==="ArrowLeft")prev();
 /* MUSIC */
 
 function playMusic(){
-document.getElementById("music").play();
+music.play();
 }
 
 function pauseMusic(){
-document.getElementById("music").pause();
+music.pause();
 }
+
+/* start music after first interaction */
+
+document.body.addEventListener("click",()=>{
+music.play().catch(()=>{});
+},{once:true});
 
 /* FLOATING HEARTS */
 
 setInterval(()=>{
+
 let heart=document.createElement("div");
+
 heart.className="heart";
 heart.innerHTML="❤";
 heart.style.left=Math.random()*100+"%";
